@@ -13,10 +13,9 @@ from tqdm import tqdm
 
 from src.mol_to_fp import calculate_fingerprint
 
-
 @Cache(
     cache_dir="experiments/n_holdouts_{holdout}/{model_name}/{_hash}",
-    cache_path="{cache_dir}/performanc.csv",
+    cache_path="{cache_dir}/performance.csv",
 )
 def run(
     dataset: pd.DataFrame,
@@ -27,6 +26,7 @@ def run(
     test_size: float,
     n_jobs: int,
     verbose=True,
+    trial_timeout=600
 ):
     pool = multiprocessing.Pool()
     X = list(
@@ -53,6 +53,7 @@ def run(
             max_evals=max_evals,
             n_jobs=n_jobs,
             verbose=verbose,
+            trial_timeout=trial_timeout
         )
 
         estim.fit(X_train, y_train)
